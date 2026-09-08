@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block head %}{% endblock %}
+
+    <title>{% block title %}Anonymous Chat{% endblock %}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        header {
+            background: #222;
+            color: white;
+            padding: 14px 20px;
+        }
+
+        header .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 25px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            font: inherit;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 10px;
+            border: 0;
+            border-radius: 4px;
+            padding: 10px 16px;
+            background: #222;
+            color: white;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .muted {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .nickname {
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .room-link {
+            font-weight: bold;
+        }
+
+        .message {
+            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+        }
+
+        .message:last-child {
+            border-bottom: 0;
+        }
+
+        .message-header {
+            margin-bottom: 5px;
+        }
+
+        .message-content {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        a {
+            color: #1557a0;
+        }
+
+        @media (max-width: 650px) {
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                border-bottom: 2px solid #ddd;
+                padding: 8px 0;
+            }
+
+            td {
+                border: 0;
+                padding: 5px 8px;
+            }
+
+            header .header-inner {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-inner">
+            <h1>
+                <a href="{{ url_for('home') }}">Anonymous Chat</a>
+            </h1>
+
+            <div>
+                You are
+                <span class="nickname">{{ nickname }}</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

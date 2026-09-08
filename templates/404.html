@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Room Not Found - Anonymous Chat{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Room not found</h2>
+
+    <p>
+        The requested chat room does not exist.
+    </p>
+
+    <p>
+        <a href="{{ url_for('home') }}">Return to the chat room list</a>
+    </p>
+</div>
+{% endblock %}

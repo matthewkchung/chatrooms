@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block head %}
+<meta http-equiv="refresh" content="5">
+{% endblock %}
+
+{% block title %}{{ room.name }} - Anonymous Chat{% endblock %}
+
+{% block content %}
+<p>
+    <a href="{{ url_for('home') }}">&larr; All rooms</a>
+</p>
+
+<div class="card">
+    <h2>{{ room.name }}</h2>
+
+    <p class="muted">
+        Created by
+        <span class="nickname">{{ room.created_by }}</span>
+        on {{ room.created_at|datetime }}
+    </p>
+</div>
+
+<div class="card">
+    <h3>Messages</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">
+                <div class="message-header">
+                    <span class="nickname">{{ message.author }}</span>
+                    <span class="muted">
+                        &mdash; {{ message.posted_at|datetime }}
+                    </span>
+                </div>
+
+                <div class="message-content">{{ message.content }}</div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No messages yet. Start the conversation.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Post a message</h3>
+
+    <form
+        method="post"
+        action="{{ url_for('room', room_id=room.id) }}"
+    >
+        <label for="content">
+            Message as <span class="nickname">{{ nickname }}</span>
+        </label>
+
+        <textarea
+            id="content"
+            name="content"
+            maxlength="4000"
+            placeholder="Type your message..."
+            required
+        ></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

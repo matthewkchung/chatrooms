@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Chat Rooms - Anonymous Chat{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Create a room</h2>
+
+    <form method="post" action="{{ url_for('home') }}">
+        <label for="name">Topic name</label>
+        <input
+            id="name"
+            name="name"
+            type="text"
+            maxlength="120"
+            placeholder="e.g. Biology Study Group"
+            required
+            autofocus
+        >
+
+        <button type="submit">Create Room</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Chat Rooms</h2>
+
+    {% if rooms %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Room</th>
+                    <th>Created by</th>
+                    <th>Messages</th>
+                    <th>Last activity</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for room, message_count, last_activity in rooms %}
+                    <tr>
+                        <td>
+                            <a
+                                class="room-link"
+                                href="{{ url_for('room', room_id=room.id) }}"
+                            >
+                                {{ room.name }}
+                            </a>
+                        </td>
+
+                        <td>{{ room.created_by }}</td>
+
+                        <td>{{ message_count }}</td>
+
+                        <td>
+                            {% if last_activity %}
+                                {{ last_activity|datetime }}
+                            {% else %}
+                                {{ room.created_at|datetime }}
+                                <span class="muted">(created)</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No chat rooms exist yet. Create the first one above.</p>
+    {% endif %}
+</div>
+{% endblock %}
