@@ -14,7 +14,7 @@ import uuid
 import os
 
 app = Flask(__name__)
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
 
 # Database configuration
 database_url = os.environ.get("DATABASE_URL")
@@ -120,7 +120,6 @@ def format_datetime(value):
 @app.route('/login')
 def login():
     """Redirect the user to Microsoft's login page."""
-    # Generate a random state value to prevent CSRF attacks
     session['state'] = str(uuid.uuid4())
 
     auth_url = _build_msal_app().get_authorization_request_url(
@@ -130,17 +129,21 @@ def login():
     )
     return redirect(auth_url)
 
+
 @app.route('/callback')
 def callback():
     """Microsoft redirects here after the user logs in."""
 
     # Security check: verify the state matches to prevent CSRF
     if request.args.get('state') != session.get('state'):
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
 
-    # Check if Microsoft returned an error (e.g. user cancelled login)
+    # Check if Microsoft returned an error
     if 'error' in request.args:
-        error_msg = request.args.get('error_description', request.args.get('error'))
+        error_msg = request.args.get(
+            'error_description',
+            request.args.get('error')
+        )
         return f'<h2>Login Error</h2><p>{error_msg}</p><a href="/">Return home</a>'
 
     # Exchange the authorization code for an ID token
@@ -153,24 +156,26 @@ def callback():
     if 'error' in result:
         return f'<h2>Token Error</h2><p>{result.get("error_description")}</p>'
 
-    # Store the token claims in the session (contains name, email, etc.)
+    # Store the token claims in the session
     session['user'] = result.get('id_token_claims')
 
-    # Redirect to where the user was trying to go, or the home page
+    # Redirect to where the user was trying to go, or home
     next_page = session.pop('next', None)
-    return redirect(next_page or url_for('index'))
+    return redirect(next_page or url_for('home'))
+
 
 @app.route('/logout')
 def logout():
     """Clear the local session and sign out of Microsoft."""
     session.clear()
-    # Redirect to Microsoft's logout endpoint so the browser session is fully cleared
+
     logout_url = (
         AUTHORITY
         + '/oauth2/v2.0/logout'
         + '?post_logout_redirect_uri='
-        + url_for('index', _external=True)
+        + url_for('home', _external=True)
     )
+
     return redirect(logout_url)
 
 
