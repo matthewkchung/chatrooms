@@ -8,11 +8,13 @@ from flask_migrate import Migrate
 from sqlalchemy import func
 from datetime import datetime, timezone
 from functools import wraps
+from werkzeug.middleware.proxy_fix import ProxyFix
 import msal
 import uuid
 import os
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # Database configuration
 database_url = os.environ.get("DATABASE_URL")
