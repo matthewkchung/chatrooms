@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+load_dotenv()   # Load .env file into environment variables
+
+
 from flask import Flask, render_template, request, session, redirect, url_for, flash, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
