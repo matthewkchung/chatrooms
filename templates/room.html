@@ -4,7 +4,7 @@
 <meta http-equiv="refresh" content="5">
 {% endblock %}
 
-{% block title %}{{ room.name }} - Anonymous Chat{% endblock %}
+{% block title %}{{ room.name }} - Chat Rooms{% endblock %}
 
 {% block content %}
 <p>
@@ -16,7 +16,7 @@
 
     <p class="muted">
         Created by
-        <span class="nickname">{{ room.created_by }}</span>
+        <span class="user_name">{{ room.created_by }}</span>
         on {{ room.created_at|datetime }}
     </p>
 </div>
@@ -28,7 +28,7 @@
         {% for message in messages %}
             <div class="message">
                 <div class="message-header">
-                    <span class="nickname">{{ message.author }}</span>
+                    <span class="user_name">{{ message.author }}</span>
                     <span class="muted">
                         &mdash; {{ message.posted_at|datetime }}
                     </span>
@@ -50,7 +50,7 @@
         action="{{ url_for('room', room_id=room.id) }}"
     >
         <label for="content">
-            Message as <span class="nickname">{{ nickname }}</span>
+            Message as <span class="user_name">{{ user_name }}</span>
         </label>
 
         <textarea

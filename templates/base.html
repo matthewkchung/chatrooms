@@ -6,7 +6,7 @@
 
     {% block head %}{% endblock %}
 
-    <title>{% block title %}Anonymous Chat{% endblock %}</title>
+    <title>{% block title %}Chat Rooms{% endblock %}</title>
 
     <style>
         * {
@@ -20,29 +20,23 @@
             color: #222;
         }
 
-        header {
-            background: #222;
+        nav {
+            background: #0A2342;
             color: white;
-            padding: 14px 20px;
-        }
-
-        header .header-inner {
-            max-width: 900px;
-            margin: 0 auto;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 20px;
         }
 
-        header a {
-            color: white;
-            text-decoration: none;
+        nav a {
+            color: #FFC107;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 22px;
+        .nav-brand {
+            font-weight: bold;
+            font-size: 1.1em;
         }
 
         main {
@@ -93,7 +87,7 @@
             font-size: 0.9rem;
         }
 
-        .nickname {
+        .user_name {
             font-weight: bold;
         }
 
@@ -168,7 +162,7 @@
                 padding: 5px 8px;
             }
 
-            header .header-inner {
+            nav {
                 align-items: flex-start;
                 flex-direction: column;
                 gap: 5px;
@@ -178,18 +172,16 @@
 </head>
 
 <body>
-    <header>
-        <div class="header-inner">
-            <h1>
-                <a href="{{ url_for('home') }}">Anonymous Chat</a>
-            </h1>
-
-            <div>
-                You are
-                <span class="nickname">{{ nickname }}</span>
-            </div>
-        </div>
-    </header>
+    <nav>
+        <span class="nav-brand">💬 ChatRooms</span>
+        {% if session.get('user') %}
+        <span>
+            Signed in as <strong>{{ session['user']['name'] }}</strong>
+            &nbsp;|&nbsp;
+            <a href="{{ url_for('logout') }}">Sign out</a>
+        </span>
+        {% endif %}
+    </nav>
 
     <main>
         {% block content %}{% endblock %}
